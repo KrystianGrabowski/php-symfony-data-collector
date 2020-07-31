@@ -14,7 +14,6 @@ RUN apt-get install -y zlib1g-dev libpq-dev git libicu-dev libxml2-dev \
     && docker-php-ext-install pdo pdo_pgsql pgsql
 
 RUN curl --insecure https://getcomposer.org/composer.phar -o /usr/bin/composer && chmod +x /usr/bin/composer
-RUN composer require --dev symfony/phpunit-bridge
 
 # Set timezone
 RUN rm /etc/localtime

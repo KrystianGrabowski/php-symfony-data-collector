@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Service\DataFetcher;
+use App\Entity\Source;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,8 +17,19 @@ class DataContoller extends AbstractController
     public function fetchData()
     {
         $fetcher = new DataFetcher();
-        $data = $fetcher->fetchData('https://api.optad360.com/testapi');
+        $data = $fetcher->fetch('https://api.optad360.com/testapi');
         return new JsonResponse($data);
     }
+
+    /**
+     * @Route("/readDb", methods={"Get"})
+     */
+    public function readDb()
+    {
+        $fetcher = $this->getDoctrine()->getRepository(Source::class)->findAll();
+        return new JsonResponse($fetcher);
+    }
+
+
 }
 ?>

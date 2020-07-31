@@ -1,9 +1,13 @@
 version: '3'
 services:
-    postgres:
+    psql:
         image: postgres
         ports:
-            - '5433:5432'
+            - '5432'
+        environment:
+            - POSTGRES_USER=${DB_USERNAME}
+            - POSTGRES_PASSWORD=${DB_PASSWORD}
+            - POSTGRES_DB=${DB_NAME}
     php:
         build: php-fpm
         ports:
@@ -12,7 +16,7 @@ services:
             - ../:/var/www/symfony:cached
             - ./logs/symfony:/var/www/symfony/var/logs:cached
         links:
-            - postgres
+            - psql
     nginx:
         build: nginx
         ports:

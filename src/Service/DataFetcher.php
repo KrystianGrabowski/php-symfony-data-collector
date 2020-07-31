@@ -5,7 +5,7 @@ use Symfony\Component\HttpClient\NativeHttpClient;
 
 class DataFetcher
 {
-    public function fetchData($url)
+    public function fetch($url)
     {
         $client = new NativeHttpClient();
         $response = $client->request(
