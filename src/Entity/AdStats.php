@@ -4,11 +4,12 @@ namespace App\Entity;
 
 use App\Repository\AdStatsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 
 /**
  * @ORM\Entity(repositoryClass=AdStatsRepository::class)
  */
-class AdStats
+class AdStats implements JsonSerializable
 {
     /**
      * @ORM\Id()
@@ -56,6 +57,11 @@ class AdStats
      * @ORM\Column(type="float")
      */
     private $ad_ctr;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $ad_settings_id;
 
     public function getId(): ?int
     {
@@ -156,5 +162,33 @@ class AdStats
         $this->ad_ctr = $ad_ctr;
 
         return $this;
+    }
+
+    public function getAdSettingsId(): ?int
+    {
+        return $this->ad_settings_id;
+    }
+
+    public function setAdSettingsId(int $ad_settings_id): self
+    {
+        $this->ad_settings_id = $ad_settings_id;
+
+        return $this;
+    }
+
+    public function jsonSerialize()
+    {
+        return array(
+            'id' => $this->getId(),
+            'url' => $this->getUrl(),
+            'tags' => $this->getTags(),
+            'date' => $this->getDate(),
+            'estimatedRevenue' => $this->getEstimatedRevenue(),
+            'adImpressions' => $this->getAdImpressions(),
+            'adEcpm' => $this->getAdEcpm(),
+            'clicks' => $this->getClicks(),
+            'adCtr' => $this->getAdCtr(),
+            'adSettingsId' => $this->getAdSettingsId()
+        );
     }
 }

@@ -32,12 +32,20 @@ class Source implements JsonSerializable
     {
         return $this->url;
     }
+
+    public function setUrl($url): self
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+    
     
     public function jsonSerialize()
     {
         return array(
-            'id' => $this->id,
-            'url' => $this->url
+            'id' => $this->getId(),
+            'url' => $this->getUrl()
         );
     }
 }

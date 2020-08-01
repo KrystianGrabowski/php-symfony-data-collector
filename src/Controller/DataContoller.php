@@ -20,22 +20,22 @@ class DataContoller extends AbstractController
     {
         $sources = $this->getDoctrine()->getRepository(Source::class)->findAll();
         $fetcher = new DataFetcher();
-        $handler = new ResponseHandler();
+        $handler = new ResponseHandler($this->getDoctrine()->getManager());
         foreach ($sources as $source)
         {
             $response = $fetcher->fetch($source->getUrl());
             $handler->handle($response);
         }
-        return new JsonResponse([1,2,3]);
+        return new JsonResponse("OK");
     }
 
     /**
      * @Route("/data", methods={"Get"})
      */
-    public function readDb()
+    public function index()
     {
-        $fetcher = $this->getDoctrine()->getRepository(Source::class)->findAll();
-        return new JsonResponse($fetcher);
+        $adStats = $this->getDoctrine()->getRepository(AdStats::class)->findAll();
+        return new JsonResponse($adStats);
     }
 
 
