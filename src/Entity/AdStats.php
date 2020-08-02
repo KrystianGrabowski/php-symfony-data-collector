@@ -4,10 +4,12 @@ namespace App\Entity;
 
 use App\Repository\AdStatsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 use JsonSerializable;
 
 /**
  * @ORM\Entity(repositoryClass=AdStatsRepository::class)
+ * @ORM\Table(name="ad_stats",uniqueConstraints={@UniqueConstraint(name="ad_stats_constraint", columns={"url", "tags" ,"date"})})
  */
 class AdStats implements JsonSerializable
 {
@@ -49,7 +51,7 @@ class AdStats implements JsonSerializable
     private $ad_ecpm;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"unsigned"=true})
      */
     private $clicks;
 
@@ -62,6 +64,11 @@ class AdStats implements JsonSerializable
      * @ORM\Column(type="integer")
      */
     private $ad_settings_id;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $source_id;
 
     public function getId(): ?int
     {
@@ -172,6 +179,18 @@ class AdStats implements JsonSerializable
     public function setAdSettingsId(int $ad_settings_id): self
     {
         $this->ad_settings_id = $ad_settings_id;
+
+        return $this;
+    }
+
+    public function getSourceId(): ?int
+    {
+        return $this->ad_settings_id;
+    }
+
+    public function setSourceId(int $source_id): self
+    {
+        $this->source_id = $source_id;
 
         return $this;
     }

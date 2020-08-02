@@ -4,10 +4,12 @@ namespace App\Entity;
 
 use App\Repository\SourceRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 use JsonSerializable;
 
 /**
  * @ORM\Entity(repositoryClass=SourceRepository::class)
+ * @ORM\Table(name="source",uniqueConstraints={@UniqueConstraint(name="source_constraint", columns={"url"})})
  */
 class Source implements JsonSerializable
 {

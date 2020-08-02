@@ -4,66 +4,45 @@ namespace App\Service;
 use App\Entity\AdStats;
 use App\Entity\AdStatsSettings;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use Exception;
 
 class ResponseHandler
 {
-    private $conn;
+    public function handleSettings($settings) :AdStatsSettings
+    {
+        $ad_settings = new AdStatsSettings();
+        $ad_settings->setCurrency($settings['currency']);
+        $ad_settings->setPeriodLength($settings['PeriodLength']);
 
-    function __construct(EntityManagerInterface $em)
-    {
-        $this->conn = $em;
-    }
-    
-    public function handle($response)
-    {
-        $settings_id = $this->handleSettings($response['settings']);
-        $headers = $this->handleHeaders($response['headers']);
-        $this->handleData($response['data'], $headers, $settings_id);
+        return $ad_settings;
     }
 
-    private function handleSettings($settings) :int
-    {
-        $ad_settings = $this->conn
-            ->getRepository(AdStatsSettings::class)
-            ->findOneBy(['currency' => $settings['currency'],
-                         'period_length' => $settings['PeriodLength']]
-            );
-
-        if ($ad_settings == null)
-        {
-            $ad_settings = new AdStatsSettings();
-            $ad_settings->setCurrency($settings['currency']);
-            $ad_settings->setPeriodLength($settings['PeriodLength']);
-            $this->conn->persist($ad_settings);
-            $this->conn->flush();
-        }
-
-        return $ad_settings->getId();
-    }
-
-    private function handleHeaders($headers)
+    public function handleHeaders($headers)
     {
         return array_flip($headers);
     }
 
-    private function handleData($data, $headers, $settings_id)
+    public function handleData($data, $headers, $settings_id, $source)
     {
+        $adStatsArray = [];
         foreach($data as $record)
         {
             $adStats = new AdStats;
-            $adStats->setUrl($record[$headers['URLs']]);
-            $adStats->setTags($record[$headers['Tags']]);
-            $adStats->setDate(\DateTime::createFromFormat('Y-m-d', $record[$headers['DATE']]));
-            $adStats->setEstimatedRevenue($record[$headers['Estimated revenue']]);
-            $adStats->setAdImpressions($record[$headers['Ad impressions']]);
-            $adStats->setAdEcpm($record[$headers['Ad eCPM']]);
-            $adStats->setClicks($record[$headers['CLICKS']]);
-            $adStats->setAdCtr($record[$headers['Ad CTR']]);
-            $adStats->setAdSettingsId($settings_id);
+            $adStats->setUrl($record[$headers['URLs']])
+                    ->setTags($record[$headers['Tags']])
+                    ->setDate(\DateTime::createFromFormat('Y-m-d', $record[$headers['DATE']]))
+                    ->setEstimatedRevenue($record[$headers['Estimated revenue']])
+                    ->setAdImpressions($record[$headers['Ad impressions']])
+                    ->setAdEcpm($record[$headers['Ad eCPM']])
+                    ->setClicks($record[$headers['CLICKS']])
+                    ->setAdCtr($record[$headers['Ad CTR']])
+                    ->setAdSettingsId($settings_id)
+                    ->setSourceId($source->getId());
 
-            $this->conn->persist($adStats);
-            $this->conn->flush();
+            $adStatsArray[] = $adStats;
         }
+        return $adStatsArray;
     }
 }
 ?>

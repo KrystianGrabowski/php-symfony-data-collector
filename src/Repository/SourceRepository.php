@@ -2,9 +2,11 @@
 
 namespace App\Repository;
 
+use App\Entity\AdStats;
 use App\Entity\Source;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 /**
  * @method Source|null find($id, $lockMode = null, $lockVersion = null)

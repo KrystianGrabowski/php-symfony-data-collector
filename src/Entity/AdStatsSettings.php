@@ -4,11 +4,14 @@ namespace App\Entity;
 
 use App\Repository\AdStatsSettingsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\UniqueConstraint;
+use JsonSerializable;
 
 /**
  * @ORM\Entity(repositoryClass=AdStatsSettingsRepository::class)
+ * @ORM\Table(name="ad_stats_settings",uniqueConstraints={@UniqueConstraint(name="ad_stats_settings_constraint", columns={"currency" ,"period_length"})})
  */
-class AdStatsSettings
+class AdStatsSettings implements JsonSerializable
 {
     /**
      * @ORM\Id()
@@ -54,5 +57,14 @@ class AdStatsSettings
         $this->period_length = $period_length;
 
         return $this;
+    }
+
+    public function jsonSerialize()
+    {
+        return array(
+            'id' => $this->getId(),
+            'currency' => $this->getCurrency(),
+            'period_length' => $this->getPeriodLength()
+        );
     }
 }

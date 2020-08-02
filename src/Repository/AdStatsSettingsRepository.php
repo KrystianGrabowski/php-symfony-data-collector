@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\AdStatsSettings;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 /**
  * @method AdStatsSettings|null find($id, $lockMode = null, $lockVersion = null)
@@ -47,4 +48,12 @@ class AdStatsSettingsRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findByAll($settings): ?AdStatsSettings
+    {
+        return $this->findOneBy([
+            'currency' => $settings->getCurrency(),
+            'period_length' => $settings->getPeriodLength()]
+        );
+    }
 }

@@ -1,25 +1,26 @@
 <?php
 namespace App\Controller;
 
+use App\Entity\AdStatsSettings;
 use App\Entity\Source;
 use App\Http\CustomJsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class SourceContoller extends AbstractController
+class SettingsController extends AbstractController
 {
     /**
-     * @Route("/source", methods={"Get"})
+     * @Route("/settings", methods={"Get"})
      */
     public function index()
     {
         try
         {
-            $sources = $this->getDoctrine()->getRepository(Source::class)->findAll();
+            $settings = $this->getDoctrine()->getRepository(AdStatsSettings::class)->findAll();
             $response = new CustomJsonResponse();
 
-            return $response->success($sources);
+            return $response->success($settings);
         }
         catch (\Exception $exception)
         {
@@ -30,7 +31,7 @@ class SourceContoller extends AbstractController
     }
 
     /**
-     * @Route("/source", methods={"POST"})
+     * @Route("/settings", methods={"POST"})
      */
     public function create(Request $request)
     {
@@ -38,11 +39,12 @@ class SourceContoller extends AbstractController
         {
             $content = $request->getContent();
             $content = json_decode($content, true);
-            $source = new Source();
-            $source->setUrl($content['url']);
+            $settings = new AdStatsSettings();
+            $settings->setCurrency($content['currency']);
+            $settings->setPeriodLength($content['periodLength']);
     
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($source);
+            $entityManager->persist($settings);
             $entityManager->flush();
             $response = new CustomJsonResponse();
 
@@ -57,16 +59,16 @@ class SourceContoller extends AbstractController
     }
 
     /**
-     * @Route("/source/{id}", methods={"GET"})
+     * @Route("/settings/{id}", methods={"GET"})
      */
     public function show($id)
     {
         try
         {
-            $source = $this->getDoctrine()->getRepository(Source::class)->find($id);
+            $settings = $this->getDoctrine()->getRepository(AdStatsSettings::class)->find($id);
             $response = new CustomJsonResponse();
 
-            return $response->success($source);
+            return $response->success($settings);
         }
         catch (\Exception $exception)
         {
@@ -77,16 +79,16 @@ class SourceContoller extends AbstractController
     }
 
     /**
-     * @Route("/source/{id}", methods={"DELETE"})
+     * @Route("/settings/{id}", methods={"DELETE"})
      */
     public function delete($id)
     {
         try
         {
-            $source = $this->getDoctrine()->getRepository(Source::class)->find($id);
+            $settings = $this->getDoctrine()->getRepository(AdStatsSettings::class)->find($id);
 
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($source);
+            $entityManager->remove($settings);
             $entityManager->flush();
             $response = new CustomJsonResponse();
 
