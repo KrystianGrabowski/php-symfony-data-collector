@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Entity\Source;
+use App\Entity\AdStats;
 use App\Http\CustomJsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -85,10 +86,13 @@ class SourceContoller extends AbstractController
         try
         {
             $source = $this->getDoctrine()->getRepository(Source::class)->find($id);
-
+            $source_id = $source->getId();
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($source);
             $entityManager->flush();
+
+            // Mini Temp Trigger
+            $adStats = $entityManager->getRepository(AdStats::class)->deleteWithSource($source_id);
             $response = new CustomJsonResponse();
 
             return $response->success();

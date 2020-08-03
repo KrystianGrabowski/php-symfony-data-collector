@@ -71,4 +71,15 @@ class AdStatsRepository extends ServiceEntityRepository
 
         }
     }
+
+    public function deleteWithSource($id)
+    {
+        $adStats = $this->findBy(['source_id' => $id]);
+        $entityManager = $this->getEntityManager();
+        foreach ($adStats as $stats)
+        {
+            $entityManager->remove($stats);
+        }
+        $entityManager->flush();
+    }
 }

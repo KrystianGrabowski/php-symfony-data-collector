@@ -207,7 +207,8 @@ class AdStats implements JsonSerializable
             'adEcpm' => $this->getAdEcpm(),
             'clicks' => $this->getClicks(),
             'adCtr' => $this->getAdCtr(),
-            'adSettingsId' => $this->getAdSettingsId()
+            'adSettingsId' => $this->getAdSettingsId(),
+            'source_id' => $this->getSourceId()
         );
     }
 }

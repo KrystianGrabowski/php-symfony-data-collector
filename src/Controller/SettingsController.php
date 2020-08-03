@@ -42,6 +42,7 @@ class SettingsController extends AbstractController
             $settings = new AdStatsSettings();
             $settings->setCurrency($content['currency']);
             $settings->setPeriodLength($content['periodLength']);
+            $settings->setGroupBy($content['groupby']);
     
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($settings);

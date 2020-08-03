@@ -26,6 +26,12 @@ class Source implements JsonSerializable
         return $this->id;
     }
 
+    public function setId($id): ?self
+    {
+        $this->id = $id;
+        return $this;
+    }
+
     /**
      * @ORM\Column(type="text")
      */
