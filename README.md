@@ -4,8 +4,9 @@
 ```
     ./run-app
 ```
-
+This starts the web server at localhost:8080
 ### Run Tests
+Switch database to test database in .env file before you run this command.
 ```
     ./run-tests
 ```
