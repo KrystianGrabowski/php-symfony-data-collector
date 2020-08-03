@@ -1,13 +1,13 @@
 # PHP Data-Collector
 
-### Install
+### Install & run
 ```
-    docker-compose up -d
+    ./run-app
 ```
 
 ### Run Tests
 ```
-    docker exec <CONTAINER_ID> vendor/bin/phpunit
+    ./run-tests
 ```
 
 ### Connect manually to database
