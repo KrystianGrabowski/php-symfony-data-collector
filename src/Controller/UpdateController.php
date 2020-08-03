@@ -63,7 +63,7 @@ class UpdateController extends AbstractController
     private function fetchAndSave($id)
     {
         $source = $this->getDoctrine()->getRepository(Source::class)->find($id);
-        dump($source->getIsActive());
+
         if ($source->getIsActive()) {
             $fetcher = new DataFetcher();
             $handler = new ResponseHandler(); 

@@ -1,20 +1,18 @@
 <?php
 namespace App\Service;
 
-use Symfony\Component\HttpClient\NativeHttpClient;
-
 class DataFetcher
 {
     public function fetch($url)
     {
-        $client = new NativeHttpClient();
-        $response = $client->request(
-            'GET',
-            $url
-        );
-        $content = $response->getContent();
-        $content = $response->toArray();
-        return $content;
+        $curl = curl_init();
+        curl_setopt_array($curl, [
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_URL => $url
+        ]);
+        $resp = curl_exec($curl);
+        curl_close($curl);
+        return json_decode($resp, true);
     }
 }
 ?>
