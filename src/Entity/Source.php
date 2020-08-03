@@ -6,6 +6,7 @@ use App\Repository\SourceRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 use JsonSerializable;
+use Exception;
 
 /**
  * @ORM\Entity(repositoryClass=SourceRepository::class)
@@ -37,8 +38,14 @@ class Source implements JsonSerializable
 
     public function setUrl($url): self
     {
-        $this->url = $url;
-
+        if (filter_var($url, FILTER_VALIDATE_URL)) {
+            $this->url = $url;
+        }
+        else
+        {
+            throw new Exception("Invalid URL");
+        }
+        
         return $this;
     }
     

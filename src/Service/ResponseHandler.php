@@ -14,6 +14,7 @@ class ResponseHandler
         $ad_settings = new AdStatsSettings();
         $ad_settings->setCurrency($settings['currency']);
         $ad_settings->setPeriodLength($settings['PeriodLength']);
+        $ad_settings->setGroupBy($settings['groupby']);
 
         return $ad_settings;
     }

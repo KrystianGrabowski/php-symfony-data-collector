@@ -30,6 +30,11 @@ class AdStatsSettings implements JsonSerializable
      */
     private $period_length;
 
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $group_by;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,12 +64,26 @@ class AdStatsSettings implements JsonSerializable
         return $this;
     }
 
+    public function getGroupBy(): ?string
+    {
+        return $this->group_by;
+    }
+
+    public function setGroupBy($group_by): self
+    {
+        $this->group_by = $group_by;
+
+        return $this;
+    }
+
+
     public function jsonSerialize()
     {
         return array(
             'id' => $this->getId(),
             'currency' => $this->getCurrency(),
-            'period_length' => $this->getPeriodLength()
+            'period_length' => $this->getPeriodLength(),
+            'group_by' => $this->getGroupBy()
         );
     }
 }

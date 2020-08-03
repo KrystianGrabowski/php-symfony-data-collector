@@ -52,7 +52,8 @@ class AdStatsSettingsRepository extends ServiceEntityRepository
     {
         return $this->findOneBy([
             'currency' => $settings->getCurrency(),
-            'period_length' => $settings->getPeriodLength()]
+            'period_length' => $settings->getPeriodLength(),
+            'group_by' => $settings->getGroupBy()]
         );
     }
 
