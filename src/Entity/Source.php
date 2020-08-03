@@ -42,12 +42,29 @@ class Source implements JsonSerializable
         return $this;
     }
     
+    /**
+     * @ORM\Column(type="boolean", options={"default" : true})
+     */
+    private $is_active = true;
+
+    public function getIsActive(): ?string
+    {
+        return $this->is_active;
+    }
+
+    public function setIsActive($is_active): self
+    {
+        $this->is_active = $is_active;
+
+        return $this;
+    }
     
     public function jsonSerialize()
     {
         return array(
             'id' => $this->getId(),
-            'url' => $this->getUrl()
+            'url' => $this->getUrl(),
+            'is_active' => $this->getIsActive() ? true : false
         );
     }
 }

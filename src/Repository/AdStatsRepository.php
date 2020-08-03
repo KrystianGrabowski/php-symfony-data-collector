@@ -5,7 +5,6 @@ namespace App\Repository;
 use App\Entity\AdStats;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 /**
  * @method AdStats|null find($id, $lockMode = null, $lockVersion = null)
@@ -56,5 +55,20 @@ class AdStatsRepository extends ServiceEntityRepository
             'tags' => $stats->getTags(),
             'date' => $stats->getDate()
         ]);
+    }
+
+    public function save($data)
+    {
+        $entityManager = $this->getEntityManager();
+        foreach($data as $stats)
+        {
+            $duplicate = $this->findByKey($stats);
+            if ($duplicate == null)
+            {
+                $entityManager->persist($stats);
+                $entityManager->flush();
+            }
+
+        }
     }
 }

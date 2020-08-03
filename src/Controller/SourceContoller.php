@@ -40,6 +40,7 @@ class SourceContoller extends AbstractController
             $content = json_decode($content, true);
             $source = new Source();
             $source->setUrl($content['url']);
+            $source->setIsActive($content['is_active']);
     
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($source);
